@@ -1,0 +1,32 @@
+#!/bin/sh
+
+REGEX_STRING="(feat|fix|refactor|docs|remove|test|init|) *(!)? *(\([0-9a-zA-Z -]+\))? *(-|:) *([0-9a-zA-Z -]+)"
+MERGE_STRING="Merge branch .*"
+
+# Get Commit message
+COMMIT_MSG=$(cat "$1")
+
+if [[ "$COMMIT_MSG" =~ $MERGE_STRING ]]; then
+    echo "Commit is merge -> format check bypassed"
+    exit 0
+fi
+
+if [[ "$COMMIT_MSG" =~ $REGEX_STRING ]]; then
+ echo "Commit Accepted!"
+ exit 0
+else
+ echo "!!COMMIT FAILED!! -> Your commit message does not follow the following format: "
+ echo "--------------------------"
+ echo "<TYPE(!)>(optional SCOPE): <SUMMARY>"
+ echo "--------------------------"
+ echo " - TYPE options: feature|fix|refactor|docs|remove|test|init (append '!' if change is code-breaking)"
+ echo " - SCOPE: Area where the changes have been made e.g. (snoopy), zs(lang), etc."
+ echo " - SUMMARY: Summary of the changes, please consider adding the component/scope. e.g. RN Viewer fix for permitted Snoopy final states"
+ echo "--------------------------"
+ echo "Examples of correct commit messages"
+ echo "- 'test!(snoopy) - dangerous test commit'"
+ echo "- 'fix - this is a fix'"
+ echo "--------------------------"
+ echo "Commit has been aborted"
+ exit 1
+fi
