@@ -1,5 +1,6 @@
 import feedparser
 import argparse
+from pathlib import Path
 from datetime import datetime,timedelta
 
 parser = argparse.ArgumentParser(
@@ -15,16 +16,18 @@ args = parser.parse_args()
 now = datetime.now()  
 time_range = timedelta(days=1)  
 
+directory = Path(__file__).parent.resolve()
+urlPath = directory.joinpath("urls.txt")
 
 if args.new_url:
-    with open("urls.txt",'a') as file:
-        file.write(args.new_url)
+    with open(urlPath,'a') as file:
+        file.write('\n' + args.new_url)
         print(f"'{args.new_url}' has been added to the rss list.")
 else:
     urls = []
 
     # Get all urls
-    with open("urls.txt",'r') as file:
+    with open(urlPath,'r') as file:
         while True:
             line = file.readline()
             if not line:
