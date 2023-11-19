@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 REGEX_STRING="(feat|fix|refactor|docs|remove|test|init|) *(!)? *(\([0-9a-zA-Z -]+\))? *(-|:) *([0-9a-zA-Z -]+)"
 MERGE_STRING="Merge branch .*"
